@@ -334,7 +334,7 @@ ShipDriverBase::ShipDriverBase( wxWindow* parent, wxWindowID id, const wxString&
 
 	m_buttonRelayCancel = new wxToggleButton( sbSizer3->GetStaticBox(), wxID_ANY, _("Relay Cancel"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_buttonRelayCancel->SetFont( wxFont( 12, wxFONTFAMILY_SWISS, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false, wxT("Arial") ) );
-	m_buttonRelayCancel->SetBackgroundColour( wxColour( 0, 255, 0 ) );
+	m_buttonRelayCancel->SetBackgroundColour( wxColour( 122, 122, 122 ) );
 	m_buttonRelayCancel->SetToolTip( _("Relay Cancel") );
 
 	fgSizer5->Add( m_buttonRelayCancel, 0, wxALL|wxEXPAND, 5 );

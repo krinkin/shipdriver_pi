@@ -53,17 +53,6 @@ set(PKG_INFO_URL https://opencpn.org/OpenCPN/plugins/shipdriver.html)
 set(SRC
     src/ShipDriver_pi.h
     src/ShipDriver_pi.cpp
-    src/icons.h
-    src/icons.cpp
-    src/ShipDrivergui.h
-    src/ShipDrivergui.cpp
-    src/ShipDrivergui_impl.cpp
-    src/ShipDrivergui_impl.h
-    src/AisMaker.h
-    src/AisMaker.cpp
-    src/GribRecord.cpp
-    src/GribRecordSet.h
-    src/GribRecord.h
 )
 
 set(PKG_API_LIB api-18)  #  A dir in opencpn-libs/ e. g., api-17 or api-16

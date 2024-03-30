@@ -52,8 +52,19 @@ public:
     wxString GetShortDescription();
     wxString GetLongDescription();
 
-    wxString StandardPath();
-    wxBitmap m_panelBitmap;
+    int GetToolbarToolCount(void) { return 1; }
+    void OnToolbarToolCallback(int id);
+
+    void OnShipDriverDialogClose() {} // TODO: implement it
+
+    wxBitmap panelBitmap_;
+
+private:
+    wxWindow* parentWindow_;
+    std::shared_ptr<wxDialog> dlg_;
+    int toolId_;
+    bool showDlg_;
+
 };
 
 #endif

@@ -72,7 +72,7 @@ static wxBitmap load_plugin(const char* icon_name, const char* api_name) {
 ShipDriver_pi::ShipDriver_pi(void* ppimgr) : opencpn_plugin_118(ppimgr) {
   // Create the PlugIn icons
   initialize_images();
-  m_panelBitmap = load_plugin("shipdriver_panel_icon", "ShipDriver_pi");
+  panelBitmap_ = load_plugin("shipdriver_panel_icon", "ShipDriver_pi");
 }
 
 ShipDriver_pi::~ShipDriver_pi(void) {
@@ -81,7 +81,21 @@ ShipDriver_pi::~ShipDriver_pi(void) {
 
 int ShipDriver_pi::Init(void) {
   AddLocaleCatalog("opencpn-ShipDriver_pi");
-  return 0;
+
+  parentWindow_ = GetOCPNCanvasWindow();
+#ifdef ocpnUSE_SVG
+    toolId_ =
+        InsertPlugInToolSVG("Navigation", _svg_shipdriver, _svg_shipdriver,
+                            _svg_shipdriver_toggled, wxITEM_CHECK, "Navigation",
+                            "", NULL, ShipDriver_TOOL_POSITION, 0, this);
+#else
+    toolId_ = InsertPlugInTool(
+        "", _img_ShipDriverIcon, _img_ShipDriverIcon, wxITEM_CHECK,
+        _("ShipDriver"), "", NULL, ShipDriver_TOOL_POSITION, 0, this);
+#endif
+
+  return (WANTS_TOOLBAR_CALLBACK | INSTALLS_TOOLBAR_TOOL | WANTS_PLUGIN_MESSAGING);
+
   // return (WANTS_OVERLAY_CALLBACK | WANTS_OPENGL_OVERLAY_CALLBACK |
   //         WANTS_TOOLBAR_CALLBACK | INSTALLS_TOOLBAR_TOOL | WANTS_CURSOR_LATLON |
   //         WANTS_NMEA_SENTENCES | WANTS_AIS_SENTENCES | WANTS_PREFERENCES |
@@ -112,10 +126,34 @@ const char* GetPlugInVersionPre() { return PKG_PRERELEASE; }
 
 const char* GetPlugInVersionBuild() { return PKG_BUILD_INFO; }
 
-wxBitmap* ShipDriver_pi::GetPlugInBitmap() { return &m_panelBitmap; }
+wxBitmap* ShipDriver_pi::GetPlugInBitmap() { return &panelBitmap_; }
 
 wxString ShipDriver_pi::GetCommonName() { return PLUGIN_API_NAME; }
 
 wxString ShipDriver_pi::GetShortDescription() { return PKG_SUMMARY; }
 
 wxString ShipDriver_pi::GetLongDescription() { return PKG_DESCRIPTION; }
+
+
+void ShipDriver_pi::OnToolbarToolCallback(int id) {
+  if (!dlg_) {
+    dlg_ = std::make_shared<wxDialog>(parentWindow_, -1, "Main dialog", wxPoint(100, 100), wxSize(200, 200));
+  }
+
+  // Toggle
+  showDlg_ = !showDlg_;
+
+  // Toggle dialog?
+  if (showDlg_) {
+    dlg_->Show();
+  } else {
+    dlg_->Hide();
+  }
+
+  // Toggle is handled by the toolbar but we must keep plugin manager b_toggle
+  // updated to actual status to ensure correct status upon toolbar rebuild
+  SetToolbarItemState(toolId_, showDlg_);
+
+  // Capture dialog position
+  RequestRefresh(parentWindow_);  // refresh main window
+}

@@ -67,25 +67,20 @@ public:
     MarineNaviMainDlg(wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size)
         : MarineNaviDlgBase(parent, id, title, pos, size) {
 
-        auto fgSizer = new wxFlexGridSizer(4, 1, 0, 0);
-        fgSizer->AddGrowableCol(0);
-        fgSizer->SetFlexibleDirection(wxVERTICAL);
+        auto fgSizer = new wxFlexGridSizer(0, 2, 0, 0);
+        fgSizer->AddGrowableCol(1);
+        fgSizer->SetFlexibleDirection(wxBOTH);
         fgSizer->SetNonFlexibleGrowMode(wxFLEX_GROWMODE_SPECIFIED);
+        
+        fgSizer->Add(new wxStaticText(this, wxID_ANY, _("Start point lat")));
+        fgSizer->Add(new wxTextCtrl(this, wxID_ANY));
+        fgSizer->Add(new wxStaticText(this, wxID_ANY, _("Start point lon")));
+        fgSizer->Add(new wxTextCtrl(this, wxID_ANY));
+        fgSizer->Add(new wxStaticText(this, wxID_ANY, _("End point lat")));
+        fgSizer->Add(new wxTextCtrl(this, wxID_ANY));
+        fgSizer->Add(new wxStaticText(this, wxID_ANY, _("End point lon")));
+        fgSizer->Add(new wxTextCtrl(this, wxID_ANY));
 
-        auto* sbSizerStartLat = new wxStaticBoxSizer(new wxStaticBox(this, wxID_ANY, _("Start point lat") ), wxHORIZONTAL);
-        auto* sbSizerStartLon = new wxStaticBoxSizer(new wxStaticBox(this, wxID_ANY, _("Start point lon") ), wxHORIZONTAL);
-        auto* sbSizerEndLat   = new wxStaticBoxSizer(new wxStaticBox(this, wxID_ANY, _("End point lat") ), wxHORIZONTAL);
-        auto* sbSizerEndLon   = new wxStaticBoxSizer(new wxStaticBox(this, wxID_ANY, _("End point lon") ), wxHORIZONTAL);
-
-        sbSizerStartLat->Add(new wxTextCtrl(sbSizerStartLat->GetStaticBox(), wxID_ANY));
-        sbSizerStartLon->Add(new wxTextCtrl(sbSizerStartLon->GetStaticBox(), wxID_ANY));
-        sbSizerEndLat->Add(new wxTextCtrl(sbSizerEndLat->GetStaticBox(), wxID_ANY));
-        sbSizerEndLon->Add(new wxTextCtrl(sbSizerEndLon->GetStaticBox(), wxID_ANY));
-
-        fgSizer->Add(sbSizerStartLat);
-        fgSizer->Add(sbSizerStartLon);
-        fgSizer->Add(sbSizerEndLat);
-        fgSizer->Add(sbSizerEndLon);
         SetSizerAndFit(fgSizer);
         this->Centre( wxBOTH );
     }

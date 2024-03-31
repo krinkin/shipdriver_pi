@@ -41,7 +41,7 @@ public:
 
 public:
     MarineNaviDlgBase(wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size)
-        : wxDialog( parent, id, title, pos, size, wxRESIZE_BORDER) {
+        : wxDialog( parent, id, title, pos, size, wxRESIZE_BORDER | wxDEFAULT_DIALOG_STYLE) {
         
         this->Connect(wxEVT_CLOSE_WINDOW, wxCloseEventHandler(MarineNaviDlgBase::OnClose));
     }
@@ -73,16 +73,16 @@ public:
         fgSizer->SetNonFlexibleGrowMode(wxFLEX_GROWMODE_SPECIFIED);
         
         fgSizer->Add(new wxStaticText(this, wxID_ANY, _("Start point lat")));
-        fgSizer->Add(new wxTextCtrl(this, wxID_ANY));
+        fgSizer->Add(new wxTextCtrl(this, wxID_ANY), 0, wxALL|wxEXPAND, 5);
         fgSizer->Add(new wxStaticText(this, wxID_ANY, _("Start point lon")));
-        fgSizer->Add(new wxTextCtrl(this, wxID_ANY));
+        fgSizer->Add(new wxTextCtrl(this, wxID_ANY), 0, wxALL|wxEXPAND, 5);
         fgSizer->Add(new wxStaticText(this, wxID_ANY, _("End point lat")));
-        fgSizer->Add(new wxTextCtrl(this, wxID_ANY));
+        fgSizer->Add(new wxTextCtrl(this, wxID_ANY), 0, wxALL|wxEXPAND, 5);
         fgSizer->Add(new wxStaticText(this, wxID_ANY, _("End point lon")));
-        fgSizer->Add(new wxTextCtrl(this, wxID_ANY));
+        fgSizer->Add(new wxTextCtrl(this, wxID_ANY), 0, wxALL|wxEXPAND, 5);
 
         SetSizerAndFit(fgSizer);
-        this->Centre( wxBOTH );
+        this->Centre(wxBOTH);
     }
 
 private:

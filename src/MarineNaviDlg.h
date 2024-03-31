@@ -41,7 +41,7 @@ public:
 
 public:
     MarineNaviDlgBase(wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size)
-        : wxDialog( parent, id, title, pos, size) {
+        : wxDialog( parent, id, title, pos, size, wxRESIZE_BORDER) {
         
         this->Connect(wxEVT_CLOSE_WINDOW, wxCloseEventHandler(MarineNaviDlgBase::OnClose));
     }

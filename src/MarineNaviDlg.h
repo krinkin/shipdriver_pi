@@ -40,8 +40,18 @@ private:
 class MarineNaviMainDlg : public MarineNaviDlgBase {
 public:
     MarineNaviMainDlg(wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size)
-        : MarineNaviDlgBase(parent, id, title, pos, size) {
+        : MarineNaviDlgBase(parent, id, title, pos, size), 
+        startLat_(std::make_shared<wxTextCtrl>(this, wxID_ANY, wxEmptyString)),
+        startLon_(std::make_shared<wxTextCtrl>(this, wxID_ANY, wxEmptyString)),
+        endLat_(std::make_shared<wxTextCtrl>(this, wxID_ANY, wxEmptyString)),
+        endLon_(std::make_shared<wxTextCtrl>(this, wxID_ANY, wxEmptyString)) {
     }
+
+private:
+    std::shared_ptr<wxTextCtrl> startLat_;
+    std::shared_ptr<wxTextCtrl> startLon_;
+    std::shared_ptr<wxTextCtrl> endLat_;
+    std::shared_ptr<wxTextCtrl> endLon_;  
 };
 
 };

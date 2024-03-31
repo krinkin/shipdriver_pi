@@ -104,6 +104,14 @@ int MarineNaviPi::Init(void) {
 }
 
 bool MarineNaviPi::DeInit(void) {
+  if (dlg_) {
+    dlg_->Close();
+    dlg_ = nullptr;
+    showDlg_ = false;
+    SetToolbarItemState(toolId_, showDlg_);
+  }
+
+  RequestRefresh(parentWindow_);
   return true;
 }
 

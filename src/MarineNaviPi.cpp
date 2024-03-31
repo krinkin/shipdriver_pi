@@ -1,13 +1,14 @@
+#include "MarineNaviDlg.h"
 #include "wx/wxprec.h"
 
-#ifndef WX_PRECOMP
 #include "wx/wx.h"
-#endif  // precompiled headers
+#include <wx/fileconf.h>
+#include <wx/stdpaths.h>
 
-#include "ShipDriver_pi.h"
+#include "MarineNaviPi.h"
 #include "ocpn_plugin.h"
 
-class ShipDriver_pi;
+class MarineNaviPi;
 class Dlg;
 
 using namespace std;
@@ -15,14 +16,14 @@ using namespace std;
 // the class factories, used to create and destroy instances of the PlugIn
 
 extern "C" DECL_EXP opencpn_plugin* create_pi(void* ppimgr) {
-  return new ShipDriver_pi(ppimgr);
+  return new MarineNaviPi(ppimgr);
 }
 
 extern "C" DECL_EXP void destroy_pi(opencpn_plugin* p) { delete p; }
 
 //---------------------------------------------------------------------------------------------------------
 //
-//    ShipDriver PlugIn Implementation
+//    Marine  NaviPi PlugIn Implementation
 //
 //---------------------------------------------------------------------------------------------------------
 
@@ -69,18 +70,18 @@ static wxBitmap load_plugin(const char* icon_name, const char* api_name) {
   return bitmap;
 }
 
-ShipDriver_pi::ShipDriver_pi(void* ppimgr) : opencpn_plugin_118(ppimgr) {
+MarineNaviPi::MarineNaviPi(void* ppimgr) : opencpn_plugin_118(ppimgr), parentWindow_(nullptr), dlg_(nullptr), toolId_(-1), showDlg_(false) {
   // Create the PlugIn icons
   initialize_images();
-  panelBitmap_ = load_plugin("shipdriver_panel_icon", "ShipDriver_pi");
+  panelBitmap_ = load_plugin("shipdriver_panel_icon", "MarineNaviPi");
 }
 
-ShipDriver_pi::~ShipDriver_pi(void) {
+MarineNaviPi::~MarineNaviPi(void) {
   delete _img_ShipDriverIcon;
 }
 
-int ShipDriver_pi::Init(void) {
-  AddLocaleCatalog("opencpn-ShipDriver_pi");
+int MarineNaviPi::Init(void) {
+  AddLocaleCatalog("opencpn-MarineNaviPi");
 
   parentWindow_ = GetOCPNCanvasWindow();
 #ifdef ocpnUSE_SVG
@@ -102,21 +103,21 @@ int ShipDriver_pi::Init(void) {
   //         WANTS_PLUGIN_MESSAGING | WANTS_CONFIG);
 }
 
-bool ShipDriver_pi::DeInit(void) {
+bool MarineNaviPi::DeInit(void) {
   return true;
 }
 
-int ShipDriver_pi::GetAPIVersionMajor() { return atoi(API_VERSION); }
+int MarineNaviPi::GetAPIVersionMajor() { return atoi(API_VERSION); }
 
-int ShipDriver_pi::GetAPIVersionMinor() {
+int MarineNaviPi::GetAPIVersionMinor() {
   std::string v(API_VERSION);
   size_t dotpos = v.find('.');
   return atoi(v.substr(dotpos + 1).c_str());
 }
 
-int ShipDriver_pi::GetPlugInVersionMajor() { return PLUGIN_VERSION_MAJOR; }
+int MarineNaviPi::GetPlugInVersionMajor() { return PLUGIN_VERSION_MAJOR; }
 
-int ShipDriver_pi::GetPlugInVersionMinor() { return PLUGIN_VERSION_MINOR; }
+int MarineNaviPi::GetPlugInVersionMinor() { return PLUGIN_VERSION_MINOR; }
 
 int GetPlugInVersionPatch() { return PLUGIN_VERSION_PATCH; }
 
@@ -126,18 +127,19 @@ const char* GetPlugInVersionPre() { return PKG_PRERELEASE; }
 
 const char* GetPlugInVersionBuild() { return PKG_BUILD_INFO; }
 
-wxBitmap* ShipDriver_pi::GetPlugInBitmap() { return &panelBitmap_; }
+wxBitmap* MarineNaviPi::GetPlugInBitmap() { return &panelBitmap_; }
 
-wxString ShipDriver_pi::GetCommonName() { return PLUGIN_API_NAME; }
+wxString MarineNaviPi::GetCommonName() { return PLUGIN_API_NAME; }
 
-wxString ShipDriver_pi::GetShortDescription() { return PKG_SUMMARY; }
+wxString MarineNaviPi::GetShortDescription() { return PKG_SUMMARY; }
 
-wxString ShipDriver_pi::GetLongDescription() { return PKG_DESCRIPTION; }
+wxString MarineNaviPi::GetLongDescription() { return PKG_DESCRIPTION; }
 
 
-void ShipDriver_pi::OnToolbarToolCallback(int id) {
+void MarineNaviPi::OnToolbarToolCallback(int id) {
   if (!dlg_) {
-    dlg_ = std::make_shared<wxDialog>(parentWindow_, -1, "Main dialog", wxPoint(100, 100), wxSize(200, 200));
+    dlg_ = std::make_shared<MarineNavi::MarineNaviMainDlg>(parentWindow_, -1, "Main dialog", wxPoint(100, 100), wxSize(200, 200));
+    dlg_->Register(std::bind(&MarineNaviPi::OnMainDlgClose, this), MarineNavi::MarineNaviDlgBase::EventType::kClose);
   }
 
   // Toggle
@@ -156,4 +158,49 @@ void ShipDriver_pi::OnToolbarToolCallback(int id) {
 
   // Capture dialog position
   RequestRefresh(parentWindow_);  // refresh main window
+}
+
+void MarineNaviPi::OnMainDlgClose() {
+  assert(showDlg_ == false);
+
+  showDlg_ = false;
+  SetToolbarItemState(toolId_, showDlg_);
+  dlg_->Hide();
+
+  RequestRefresh(parentWindow_);  // refresh main window
+}
+
+wxString MarineNaviPi::StandardPath()
+{
+    wxString s = wxFileName::GetPathSeparator();
+    wxString stdPath  = *GetpPrivateApplicationDataLocation();
+
+    stdPath += s + _T("plugins");
+    if (!wxDirExists(stdPath)) {
+      wxMkdir(stdPath);
+    }
+
+    stdPath += s + _T("marine_navi");
+
+#ifdef __WXOSX__
+    // Compatibility with pre-OCPN-4.2; move config dir to
+    // ~/Library/Preferences/opencpn if it exists
+    {
+        wxStandardPathsBase& std_path = wxStandardPathsBase::Get();
+        wxString s = wxFileName::GetPathSeparator();
+        // should be ~/Library/Preferences/opencpn
+        wxString oldPath = (std_path.GetUserConfigDir() +s + _T("plugins") +s + _T("marine_navi"));
+        if (wxDirExists(oldPath) && !wxDirExists(stdPath)) {
+          wxLogMessage("marine_navi: moving config dir %s to %s", oldPath, stdPath);
+          wxRenameFile(oldPath, stdPath);
+        }
+    }
+#endif
+
+    if (!wxDirExists(stdPath)) {
+      wxMkdir(stdPath);
+    }
+
+    stdPath += s;
+    return stdPath;
 }

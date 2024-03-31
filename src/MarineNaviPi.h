@@ -1,3 +1,5 @@
+#pragma once
+
 #ifndef _SDR_PI_H_
 #define _SDR_PI_H_
 
@@ -19,13 +21,13 @@
 
 #include "ocpn_plugin.h" //Required for OCPN plugin functions
 
+#include "MarineNaviDlg.h"
+
 // Define minimum and maximum versions of the grib plugin supported
 #define GRIB_MAX_MAJOR 4
 #define GRIB_MAX_MINOR 1
 #define GRIB_MIN_MAJOR 4
 #define GRIB_MIN_MINOR 1
-
-class Dlg;
 
 //----------------------------------------------------------------------------------------------------------
 //    The PlugIn Class Definition
@@ -34,10 +36,10 @@ class Dlg;
 #define ShipDriver_TOOL_POSITION                                               \
     -1 // Request default positioning of toolbar tool
 
-class ShipDriver_pi : public opencpn_plugin_118 {
+class MarineNaviPi : public opencpn_plugin_118 {
 public:
-    ShipDriver_pi(void* ppimgr);
-    ~ShipDriver_pi(void);
+    MarineNaviPi(void* ppimgr);
+    ~MarineNaviPi(void);
 
     //    The required PlugIn Methods
     int Init(void);
@@ -55,16 +57,17 @@ public:
     int GetToolbarToolCount(void) { return 1; }
     void OnToolbarToolCallback(int id);
 
-    void OnShipDriverDialogClose() {} // TODO: implement it
+    void OnMainDlgClose();
+
+    static wxString StandardPath();
 
     wxBitmap panelBitmap_;
 
 private:
     wxWindow* parentWindow_;
-    std::shared_ptr<wxDialog> dlg_;
+    std::shared_ptr<MarineNavi::MarineNaviMainDlg> dlg_;
     int toolId_;
     bool showDlg_;
-
 };
 
 #endif

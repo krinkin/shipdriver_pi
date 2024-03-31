@@ -51,8 +51,10 @@ set(PKG_HOMEPAGE https://github.com/Rasbats/shipdriver_pi)
 set(PKG_INFO_URL https://opencpn.org/OpenCPN/plugins/shipdriver.html)
 
 set(SRC
-    src/ShipDriver_pi.h
-    src/ShipDriver_pi.cpp
+    src/MarineNaviDlg.h
+    src/MarineNaviDlg.cpp
+    src/MarineNaviPi.h
+    src/MarineNaviPi.cpp
     src/icons.h
     src/icons.cpp
 )

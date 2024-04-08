@@ -57,6 +57,8 @@ set(SRC
     src/MarineNaviPi.cpp
     src/icons.h
     src/icons.cpp
+    src/CheckPathCase.h
+    src/Dependencies.h
 )
 
 set(PKG_API_LIB api-18)  #  A dir in opencpn-libs/ e. g., api-17 or api-16

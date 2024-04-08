@@ -95,7 +95,7 @@ int MarineNaviPi::Init(void) {
         _("ShipDriver"), "", NULL, ShipDriver_TOOL_POSITION, 0, this);
 #endif
 
-  return (WANTS_TOOLBAR_CALLBACK | INSTALLS_TOOLBAR_TOOL | WANTS_PLUGIN_MESSAGING);
+  return (WANTS_OVERLAY_CALLBACK | WANTS_OPENGL_OVERLAY_CALLBACK | WANTS_TOOLBAR_CALLBACK | INSTALLS_TOOLBAR_TOOL | WANTS_PLUGIN_MESSAGING);
 
   // return (WANTS_OVERLAY_CALLBACK | WANTS_OPENGL_OVERLAY_CALLBACK |
   //         WANTS_TOOLBAR_CALLBACK | INSTALLS_TOOLBAR_TOOL | WANTS_CURSOR_LATLON |
@@ -146,7 +146,11 @@ wxString MarineNaviPi::GetLongDescription() { return PKG_DESCRIPTION; }
 
 void MarineNaviPi::OnToolbarToolCallback(int id) {
   if (!dlg_) {
-    dlg_ = std::make_shared<MarineNavi::MarineNaviMainDlg>(parentWindow_, -1, "Main dialog", wxPoint(100, 100), wxSize(800, 800));
+    MarineNavi::Dependencies deps;
+    deps.CheckPathCase = std::make_shared<MarineNavi::CheckPathCase>();
+    deps.OcpnCanvasWindow = parentWindow_;
+
+    dlg_ = std::make_shared<MarineNavi::MarineNaviMainDlg>(parentWindow_, -1, "Main dialog", wxPoint(100, 100), wxSize(800, 800), deps);
     dlg_->Register(std::bind(&MarineNaviPi::OnMainDlgClose, this), MarineNavi::MarineNaviDlgBase::EventType::kClose);
   }
 

@@ -61,12 +61,18 @@ public:
 
 
     bool RenderOverlay(wxDC &wxdc, PlugIn_ViewPort *vp) override {
+        if (!renderOverlay_) {
+            return false;
+        }
         piDC dc(wxdc);
-
+        
         return renderOverlay_->Render(dc, vp);
     }
 
     bool RenderGLOverlay(wxGLContext *pcontext, PlugIn_ViewPort *vp) override {
+        if (!renderOverlay_) {
+            return false;
+        }
         piDC dc;
         dc.SetVP(vp);
 

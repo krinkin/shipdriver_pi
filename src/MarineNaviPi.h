@@ -24,6 +24,7 @@
 #include "ocpn_plugin.h" //Required for OCPN plugin functions
 
 #include "MarineNaviDlg.h"
+#include "RenderOverlay.h"
 
 #include "pidc.h"
 
@@ -61,47 +62,15 @@ public:
 
     bool RenderOverlay(wxDC &wxdc, PlugIn_ViewPort *vp) override {
         piDC dc(wxdc);
-        wxPoint2DDouble pt;
-        GetDoubleCanvasPixLL(vp, &pt, 55.751244, 37.618423);
-        wxPoint pp1;
-        pp1.x = (int)wxRound(pt.m_x);
-        pp1.y = (int)wxRound(pt.m_y);
 
-        GetDoubleCanvasPixLL(vp, &pt, 51.5072, 0.1276);
-        wxPoint pp2;
-        pp2.x = (int)wxRound(pt.m_x);
-        pp2.y = (int)wxRound(pt.m_y);
-
-        // if (checkPathCase_->IsShow()) {
-        dc.SetPen(wxPen(wxColor(0, 0, 0)));
-        wxPen pen = dc.GetPen();
-        pen.SetWidth(10);
-        dc.StrokeLine(pp1.x, pp1.y, pp2.x, pp2.y);
-        // }
-        return true;
+        return renderOverlay_->Render(dc, vp);
     }
 
     bool RenderGLOverlay(wxGLContext *pcontext, PlugIn_ViewPort *vp) override {
         piDC dc;
         dc.SetVP(vp);
-        wxPoint2DDouble pt;
-        GetDoubleCanvasPixLL(vp, &pt, 55.751244, 37.618423);
-        wxPoint pp1;
-        pp1.x = (int)wxRound(pt.m_x);
-        pp1.y = (int)wxRound(pt.m_y);
 
-        GetDoubleCanvasPixLL(vp, &pt, 51.5072, 0.1276);
-        wxPoint pp2;
-        pp2.x = (int)wxRound(pt.m_x);
-        pp2.y = (int)wxRound(pt.m_y);
-
-        // if (checkPathCase_->IsShow()) {
-        dc.SetPen(wxPen(wxColor(0, 0, 0)));
-        wxPen pen = dc.GetPen();
-        pen.SetWidth(10);
-        dc.StrokeLine(pp1.x, pp1.y, pp2.x, pp2.y);
-        // }
-        return true;
+        return renderOverlay_->Render(dc, vp);
     }
 
     int GetToolbarToolCount(void) { return 1; }
@@ -116,7 +85,7 @@ public:
 private:
     wxWindow* parentWindow_;
     std::shared_ptr<MarineNavi::MarineNaviMainDlg> dlg_;
-    std::shared_ptr<MarineNavi::CheckPathCase> checkPathCase_;
+    std::shared_ptr<MarineNavi::RenderOverlay> renderOverlay_;
 
     int toolId_;
     bool showDlg_;

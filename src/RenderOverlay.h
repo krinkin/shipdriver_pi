@@ -10,7 +10,7 @@ namespace MarineNavi {
 
 class RenderOverlay {
 public:
-    RenderOverlay(Dependencies& deps) {
+    RenderOverlay(Dependencies& deps): checkPathCase_(deps.CheckPathCase) {
     }
 
     bool Render(piDC dc, PlugIn_ViewPort *vp) { 

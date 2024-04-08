@@ -151,7 +151,10 @@ void MarineNaviPi::OnToolbarToolCallback(int id) {
   if (!dlg_) {
     MarineNavi::Dependencies deps;
     deps.CheckPathCase = std::make_shared<MarineNavi::CheckPathCase>();
+    deps.RenderOverlay = std::make_shared<MarineNavi::RenderOverlay>(deps);
     deps.OcpnCanvasWindow = parentWindow_;
+
+    renderOverlay_ = deps.RenderOverlay;
 
     dlg_ = std::make_shared<MarineNavi::MarineNaviMainDlg>(parentWindow_, -1, "Main dialog", wxPoint(100, 100), wxSize(800, 800), deps);
     dlg_->Register(std::bind(&MarineNaviPi::OnMainDlgClose, this), MarineNavi::MarineNaviDlgBase::EventType::kClose);

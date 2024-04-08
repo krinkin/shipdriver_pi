@@ -81,8 +81,8 @@ public:
         return true;
     }
 
-    bool RenderGLOverlay(wxDC &wxdc, PlugIn_ViewPort *vp) {
-        piDC dc(wxdc);
+    bool RenderGLOverlay(wxGLContext *pcontext, PlugIn_ViewPort *vp) override {
+        piDC dc;
         dc.SetVP(vp);
         wxPoint2DDouble pt;
         GetDoubleCanvasPixLL(vp, &pt, 55.751244, 37.618423);

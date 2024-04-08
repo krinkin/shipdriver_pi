@@ -33,11 +33,11 @@ private:
         wxPoint2DDouble ptD;
         GetDoubleCanvasPixLL(vp, &ptD, pathData.StartLat, pathData.StartLon);
         wxPoint pt1, pt2;
-        pt1.x = (int)wxRound(ptD.m_x);
-        pt1.y = (int)wxRound(ptD.m_y);
+        pt1.x = round(wxRound(ptD.m_x));
+        pt1.y = round(wxRound(ptD.m_y));
         GetDoubleCanvasPixLL(vp, &ptD, pathData.EndLat, pathData.EndLon);
-        pt2.x = (int)wxRound(ptD.m_x);
-        pt2.y = (int)wxRound(ptD.m_y);
+        pt2.x = round(wxRound(ptD.m_x));
+        pt2.y = round(wxRound(ptD.m_y));
         dc.DrawLine(pt1.x, pt1.y, pt2.x, pt2.y);
 
         auto cross = checkPathCase_->CrossDetect(pathData);
@@ -45,7 +45,8 @@ private:
             fprintf(stderr, "Draw circle %f %f\n", cross->m_x, cross->m_y);
             wxPoint2DDouble crossCenter;
             GetDoubleCanvasPixLL(vp, &crossCenter, cross->m_x, cross->m_y);
-            dc.StrokeCircle((int)crossCenter.m_x, (int)crossCenter.m_y, 10);
+            fprintf(stderr, "Draw circle2 %f %f\n", crossCenter.m_x, crossCenter.m_y);
+            dc.DrawCircle(round(crossCenter.m_x), round(crossCenter.m_y), 10);
         }
     }
 

@@ -43,7 +43,7 @@ public:
     }
 
     std::optional<wxPoint2DDouble> CrossDetect(const PathData& pathData_) const {
-        static constexpr int ITER_NUM = 30;
+        static constexpr int ITER_NUM = 5;
 
         double startX = pathData_.StartLat, startY = pathData_.StartLon;
         double endX = pathData_.EndLat, endY = pathData_.EndLon;
@@ -57,7 +57,7 @@ public:
             return std::nullopt;
         }
 
-        fprintf(stderr, "Collision detected\n");
+        fprintf(stderr, "Collision detected %f %f %f %f\n", startX, startY, endX, endY);
 
         for(int i = 0; i < ITER_NUM; ++i) {
             vecX /= 2;

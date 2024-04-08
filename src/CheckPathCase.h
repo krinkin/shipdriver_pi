@@ -46,24 +46,33 @@ public:
     std::optional<wxPoint2DDouble> CrossDetect(const PathData& pathData_) const {
         static constexpr int ITER_NUM = 30;
 
-        wxPoint2DDouble start = wxPoint2DDouble(pathData_.StartLat, pathData_.StartLat);
-        wxPoint2DDouble end = wxPoint2DDouble(pathData_.EndLat, pathData_.EndLat);
+        double startX = pathData_.StartLat, startY = pathData_.StartLon;
+        double endX = pathData_.EndLat, endY = pathData_.EndLon;
+        double vecX = endX - startX, vecY = endY - startY;
+
+        // wxPoint2DDouble start = wxPoint2DDouble(pathData_.StartLat, pathData_.StartLon);
+        // wxPoint2DDouble end = wxPoint2DDouble(pathData_.EndLat, pathData_.EndLat);
         // wxPoint2DDouble vec = end - start;
         
-        // if (!PlugIn_GSHHS_CrossesLand(start.m_x, start.m_y, end.m_x, end.m_y)) {
-        //     return std::nullopt;
-        // }
+        if (!PlugIn_GSHHS_CrossesLand(startX, startY, endX, endY)) {
+             return std::nullopt;
+        }
 
-        // for(int i = 0; i < ITER_NUM; ++i) {
-        //     vec /= 2;
-        //     auto mid = start + vec;
-        //     if (true) { //PlugIn_GSHHS_CrossesLand(start.m_x, start.m_y, mid.m_x, mid.m_y)) {
-        //         end = mid;
-        //     } else {
-        //         start = mid;
-        //     }
-        // }
-        return end;
+        for(int i = 0; i < ITER_NUM; ++i) {
+            vecX /= 2;
+            vecY /= 2;
+            double midX = startX + vecX;
+            double midY = startY + vecY;
+
+            if (PlugIn_GSHHS_CrossesLand(startX, startY, midX, midY)) {
+                endX = midX;
+                endY = midY;
+            } else {
+                startX = midX;
+                startY = midY;
+            }
+        }
+        return wxPoint2DDouble(endX, endY);
     }
 
 private:

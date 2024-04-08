@@ -72,11 +72,11 @@ namespace MarineNavi {
         SetSizerAndFit(fgSizer);
         this->Centre(wxBOTH);
 
-        bCheckPath->Connect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(MarineNaviMainDlg::OnCheckPathClicked));
+        // bCheckPath->Connect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(MarineNaviMainDlg::OnCheckPathClicked));
     }
 
     MarineNaviMainDlg::~MarineNaviMainDlg() {
-        bCheckPath_->Disconnect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(MarineNaviMainDlg::OnCheckPathClicked));
+        // bCheckPath_->Disconnect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(MarineNaviMainDlg::OnCheckPathClicked));
     }
 
     void MarineNaviMainDlg::OnCheckPathClicked(wxCommandEvent& event) {

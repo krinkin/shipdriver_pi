@@ -93,7 +93,6 @@ namespace MarineNavi {
             || !rawLonEnd.ToDouble(&pathData.EndLon)){
 
             printf("failed to parse start or end coordinates");
-            // TODO notify somehow in app
             return;
         }
 
@@ -101,5 +100,4 @@ namespace MarineNavi {
         checkPathCase_->SetShow(true);
         RequestRefresh(canvasWindow_);
     }
-
 }

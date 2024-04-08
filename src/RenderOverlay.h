@@ -14,6 +14,7 @@ public:
     }
 
     bool Render(piDC& dc, PlugIn_ViewPort *vp) { 
+        return false;
         if (checkPathCase_->IsShow()) {
             auto pathData = checkPathCase_->GetPathData();
             RenderCheckPath(dc, vp, pathData);

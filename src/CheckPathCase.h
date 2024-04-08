@@ -40,7 +40,6 @@ public:
     }
 
     std::optional<wxPoint2DDouble> CrossDetect(const PathData& pathData_) {
-        return std::nullopt;
         static constexpr int ITER_NUM = 30;
 
         wxPoint2DDouble start = wxPoint2DDouble(pathData_.StartLat, pathData_.StartLat);

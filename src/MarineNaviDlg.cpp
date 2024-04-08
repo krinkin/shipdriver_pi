@@ -97,7 +97,7 @@ namespace MarineNavi {
         }
 
         checkPathCase_->SetPathData(pathData);
-        checkPathCase_->SetShow(true);
+        checkPathCase_->SetShow(false);
         RequestRefresh(canvasWindow_);
     }
 }

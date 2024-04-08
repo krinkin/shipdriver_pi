@@ -1,11 +1,14 @@
+#include "MarineNaviPi.h"
+
+#include "CheckPathCase.h"
 #include "MarineNaviDlg.h"
+
 #include "wx/wxprec.h"
 
 #include "wx/wx.h"
 #include <wx/fileconf.h>
 #include <wx/stdpaths.h>
 
-#include "MarineNaviPi.h"
 #include "ocpn_plugin.h"
 
 class MarineNaviPi;

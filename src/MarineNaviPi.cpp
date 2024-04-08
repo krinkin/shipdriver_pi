@@ -1,6 +1,5 @@
 #include "MarineNaviPi.h"
 
-#include "CheckPathCase.h"
 #include "MarineNaviDlg.h"
 
 #include "wx/wxprec.h"

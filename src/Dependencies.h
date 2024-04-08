@@ -9,7 +9,7 @@ namespace MarineNavi {
 class CheckPathCase;
 
 struct Dependencies {
-std::shared_ptr<CheckPathCase> CheckPathCase;
+std::shared_ptr<MarineNavi::CheckPathCase> CheckPathCase;
 wxWindow* OcpnCanvasWindow;
 };
 

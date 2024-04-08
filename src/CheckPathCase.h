@@ -39,7 +39,6 @@ public:
 
     bool IsShow() {
         std::lock_guard lock(mutex_);
-        fprintf(stderr, "Check is show\n");
         return show_;
     }
 
@@ -55,8 +54,10 @@ public:
         // wxPoint2DDouble vec = end - start;
         
         if (!PlugIn_GSHHS_CrossesLand(startX, startY, endX, endY)) {
-             return std::nullopt;
+            return std::nullopt;
         }
+
+        fprintf(stderr, "Collision detected");
 
         for(int i = 0; i < ITER_NUM; ++i) {
             vecX /= 2;

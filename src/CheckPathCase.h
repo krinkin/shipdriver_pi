@@ -43,7 +43,7 @@ public:
     }
 
     std::optional<wxPoint2DDouble> CrossDetect(const PathData& pathData_) const {
-        static constexpr int ITER_NUM = 5;
+        static constexpr int ITER_NUM = 10;
 
         double origX = pathData_.StartLat, origY = pathData_.StartLon;
         double startX = pathData_.StartLat, startY = pathData_.StartLon;

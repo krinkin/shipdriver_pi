@@ -5,7 +5,6 @@
 #include "Dependencies.h"
 #include "CheckPathCase.h"
 
-
 namespace MarineNavi {
 
 class RenderOverlay {
@@ -44,7 +43,9 @@ private:
         auto cross = checkPathCase_->CrossDetect(pathData);
         if (cross.has_value()) {
             fprintf(stderr, "Draw circle %f %f\n", cross->m_x, cross->m_y);
-            dc.StrokeCircle(cross->m_x, cross->m_y, 5);
+            wxPoint2DDouble crossCenter;
+            GetDoubleCanvasPixLL(vp, &crossCenter, cross->m_x, cross->m_y);
+            dc.StrokeCircle((int)crossCenter.m_x, (int)crossCenter.m_y, 10);
         }
     }
 

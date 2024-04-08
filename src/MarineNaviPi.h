@@ -58,8 +58,32 @@ public:
     wxString GetShortDescription();
     wxString GetLongDescription();
 
-    bool RenderOverlay(wxDC &wxdc, PlugIn_ViewPort *vp) {
+
+    bool RenderOverlay(wxDC &wxdc, PlugIn_ViewPort *vp) override {
         piDC dc(wxdc);
+        wxPoint2DDouble pt;
+        GetDoubleCanvasPixLL(vp, &pt, 55.751244, 37.618423);
+        wxPoint pp1;
+        pp1.x = (int)wxRound(pt.m_x);
+        pp1.y = (int)wxRound(pt.m_y);
+
+        GetDoubleCanvasPixLL(vp, &pt, 51.5072, 0.1276);
+        wxPoint pp2;
+        pp2.x = (int)wxRound(pt.m_x);
+        pp2.y = (int)wxRound(pt.m_y);
+
+        // if (checkPathCase_->IsShow()) {
+        dc.SetPen(wxPen(wxColor(0, 0, 0)));
+        wxPen pen = dc.GetPen();
+        pen.SetWidth(10);
+        dc.StrokeLine(pp1.x, pp1.y, pp2.x, pp2.y);
+        // }
+        return true;
+    }
+
+    bool RenderGLOverlay(wxDC &wxdc, PlugIn_ViewPort *vp) {
+        piDC dc(wxdc);
+        dc.SetVP(vp);
         wxPoint2DDouble pt;
         GetDoubleCanvasPixLL(vp, &pt, 55.751244, 37.618423);
         wxPoint pp1;

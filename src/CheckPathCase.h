@@ -36,7 +36,7 @@ public:
 
     bool IsShow() {
         std::lock_guard lock(mutex_);
-        return false;
+        return show_;
     }
 
     std::optional<wxPoint2DDouble> CrossDetect(const PathData& pathData_) {

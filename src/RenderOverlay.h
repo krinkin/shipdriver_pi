@@ -37,6 +37,10 @@ private:
         pt2.x = (int)wxRound(ptD.m_x);
         pt2.y = (int)wxRound(ptD.m_y);
         dc.StrokeLine(pt1.x, pt1.y, pt2.x, pt2.y);
+
+        if (auto cross = checkPathCase_->CrossDetect(pathData); cross.has_value()) {
+            dc.DrawCircle(cross->m_x, cross->m_y, 10);
+        }
     }
 
 private:

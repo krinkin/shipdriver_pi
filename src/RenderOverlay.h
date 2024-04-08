@@ -40,7 +40,7 @@ private:
 
         auto cross = checkPathCase_->CrossDetect(pathData);
         if (cross.has_value()) {
-            dc.DrawCircle(cross->m_x, cross->m_y, 10);
+            dc.DrawCircle(cross->m_x, cross->m_y, 100);
         }
     }
 

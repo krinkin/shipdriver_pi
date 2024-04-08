@@ -31,13 +31,13 @@ public:
 
     void SetShow(bool show) {
         std::lock_guard lock(mutex_);
-        printf("Trying set show");
+        fprintf(stderr, "Trying set show");
         show_ = show;
     }
 
     bool IsShow() {
         std::lock_guard lock(mutex_);
-        printf("Check is show");
+        fprintf(stderr, "Check is show");
         return show_;
     }
 

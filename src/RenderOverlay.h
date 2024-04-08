@@ -13,7 +13,7 @@ public:
     RenderOverlay(Dependencies& deps): checkPathCase_(deps.CheckPathCase) {
     }
 
-    bool Render(piDC dc, PlugIn_ViewPort *vp) { 
+    bool Render(piDC& dc, PlugIn_ViewPort *vp) { 
         if (checkPathCase_->IsShow()) {
             auto pathData = checkPathCase_->GetPathData();
             RenderCheckPath(dc, vp, pathData);
@@ -23,7 +23,7 @@ public:
     }
 
 private:
-    void RenderCheckPath(piDC dc, PlugIn_ViewPort *vp, const PathData& pathData) {
+    void RenderCheckPath(piDC& dc, PlugIn_ViewPort *vp, const PathData& pathData) {
         dc.SetPen(wxPen(wxColor(0, 0, 0)));
         wxPen pen = dc.GetPen();
         pen.SetWidth(10);

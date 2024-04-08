@@ -72,7 +72,10 @@ public:
         pp2.y = (int)wxRound(pt.m_y);
 
         // if (checkPathCase_->IsShow()) {
-        dc.DrawLine(pp1.x, pp1.y, pp2.x, pp2.y);
+        dc.SetPen(wxPen(wxColor(0, 0, 0)));
+        wxPen pen = dc.GetPen();
+        pen.SetWidth(10);
+        dc.StrokeLine(pp1.x, pp1.y, pp2.x, pp2.y);
         // }
         return true;
     }

@@ -26,7 +26,7 @@ private:
     void RenderCheckPath(piDC& dc, PlugIn_ViewPort *vp, const PathData& pathData) {
         dc.SetPen(wxPen(wxColor(0, 0, 0)));
         wxPen pen = dc.GetPen();
-        pen.SetWidth(10);
+        pen.SetWidth(50);
 
         wxPoint2DDouble ptD;
         GetDoubleCanvasPixLL(vp, &ptD, pathData.StartLat, pathData.StartLon);
@@ -40,7 +40,7 @@ private:
 
         auto cross = checkPathCase_->CrossDetect(pathData);
         if (cross.has_value()) {
-            dc.DrawCircle(cross->m_x, cross->m_y, 100);
+            dc.StrokeCircle(cross->m_x, cross->m_y, 100);
         }
     }
 

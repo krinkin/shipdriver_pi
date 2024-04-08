@@ -57,7 +57,7 @@ public:
             return std::nullopt;
         }
 
-        fprintf(stderr, "Collision detected");
+        fprintf(stderr, "Collision detected\n");
 
         for(int i = 0; i < ITER_NUM; ++i) {
             vecX /= 2;

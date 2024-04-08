@@ -61,10 +61,10 @@ namespace MarineNavi {
 
         auto* fgSizer = new wxFlexGridSizer(0, 1, 0, 0);
 
-        auto* bCheckPath = new wxButton(this, wxID_ANY, _("Check path"));
+        bCheckPath_ = new wxButton(this, wxID_ANY, _("Check path"));
 
         fgSizer->Add(fgSizer11);
-        fgSizer->Add(bCheckPath);
+        fgSizer->Add(bCheckPath_);
         fgSizer->AddGrowableRow(0);
         fgSizer->SetFlexibleDirection(wxBOTH);
         fgSizer->SetNonFlexibleGrowMode(wxFLEX_GROWMODE_SPECIFIED);
@@ -72,7 +72,7 @@ namespace MarineNavi {
         SetSizerAndFit(fgSizer);
         this->Centre(wxBOTH);
 
-        bCheckPath->Connect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(MarineNaviMainDlg::OnCheckPathClicked), NULL, this);
+        bCheckPath_->Connect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(MarineNaviMainDlg::OnCheckPathClicked), NULL, this);
     }
 
     MarineNaviMainDlg::~MarineNaviMainDlg() {

@@ -45,6 +45,7 @@ public:
     std::optional<wxPoint2DDouble> CrossDetect(const PathData& pathData_) const {
         static constexpr int ITER_NUM = 5;
 
+        double origX = pathData_.StartLat, origY = pathData_.StartLon;
         double startX = pathData_.StartLat, startY = pathData_.StartLon;
         double endX = pathData_.EndLat, endY = pathData_.EndLon;
         double vecX = endX - startX, vecY = endY - startY;
@@ -65,7 +66,7 @@ public:
             double midX = startX + vecX;
             double midY = startY + vecY;
 
-            if (PlugIn_GSHHS_CrossesLand(startX, startY, midX, midY)) {
+            if (PlugIn_GSHHS_CrossesLand(origX, origY, midX, midY)) {
                 endX = midX;
                 endY = midY;
             } else {

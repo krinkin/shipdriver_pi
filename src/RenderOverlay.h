@@ -24,9 +24,12 @@ public:
 
 private:
     void RenderCheckPath(piDC& dc, PlugIn_ViewPort *vp, const PathData& pathData) {
+        dc.SetPen(*wxBLACK); // reset pen
+        dc.SetBrush( *wxTRANSPARENT_BRUSH); // reset brush
         dc.SetPen(wxPen(wxColor(0, 0, 0)));
         wxPen pen = dc.GetPen();
         pen.SetWidth(5);
+        dc.SetPen(pen);
 
         wxPoint2DDouble ptD;
         GetDoubleCanvasPixLL(vp, &ptD, pathData.StartLat, pathData.StartLon);

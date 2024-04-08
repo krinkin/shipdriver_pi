@@ -74,6 +74,12 @@ static wxBitmap load_plugin(const char* icon_name, const char* api_name) {
 
 MarineNaviPi::MarineNaviPi(void* ppimgr) : opencpn_plugin_118(ppimgr), parentWindow_(nullptr), dlg_(nullptr), toolId_(-1), showDlg_(false) {
   // Create the PlugIn icons
+  deps_.CheckPathCase = std::make_shared<MarineNavi::CheckPathCase>();
+  deps_.RenderOverlay = std::make_shared<MarineNavi::RenderOverlay>(deps_);
+  deps_.OcpnCanvasWindow = parentWindow_;
+
+  renderOverlay_ = deps_.RenderOverlay;
+
   initialize_images();
   panelBitmap_ = load_plugin("shipdriver_panel_icon", "MarineNaviPi");
 }
@@ -149,14 +155,7 @@ wxString MarineNaviPi::GetLongDescription() { return PKG_DESCRIPTION; }
 
 void MarineNaviPi::OnToolbarToolCallback(int id) {
   if (!dlg_) {
-    MarineNavi::Dependencies deps;
-    deps.CheckPathCase = std::make_shared<MarineNavi::CheckPathCase>();
-    deps.RenderOverlay = std::make_shared<MarineNavi::RenderOverlay>(deps);
-    deps.OcpnCanvasWindow = parentWindow_;
-
-    renderOverlay_ = deps.RenderOverlay;
-
-    dlg_ = std::make_shared<MarineNavi::MarineNaviMainDlg>(parentWindow_, -1, "Main dialog", wxPoint(100, 100), wxSize(800, 800), deps);
+    dlg_ = std::make_shared<MarineNavi::MarineNaviMainDlg>(parentWindow_, -1, "Main dialog", wxPoint(100, 100), wxSize(800, 800), deps_);
     dlg_->Register(std::bind(&MarineNaviPi::OnMainDlgClose, this), MarineNavi::MarineNaviDlgBase::EventType::kClose);
   }
 

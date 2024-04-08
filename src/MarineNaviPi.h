@@ -83,6 +83,7 @@ public:
     wxBitmap panelBitmap_;
 
 private:
+    MarineNavi::Dependencies deps_;
     wxWindow* parentWindow_;
     std::shared_ptr<MarineNavi::MarineNaviMainDlg> dlg_;
     std::shared_ptr<MarineNavi::RenderOverlay> renderOverlay_;

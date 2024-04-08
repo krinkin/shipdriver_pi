@@ -2,6 +2,8 @@
 
 #include <ocpn_plugin.h>
 
+#include <wx/wx.h>
+
 #include <mutex>
 #include <optional>
 
@@ -31,13 +33,13 @@ public:
 
     void SetShow(bool show) {
         std::lock_guard lock(mutex_);
-        fprintf(stderr, "Trying set show");
+        fprintf(stderr, "Trying set show\n");
         show_ = show;
     }
 
     bool IsShow() {
         std::lock_guard lock(mutex_);
-        fprintf(stderr, "Check is show");
+        fprintf(stderr, "Check is show\n");
         return show_;
     }
 

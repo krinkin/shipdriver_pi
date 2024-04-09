@@ -79,6 +79,16 @@ public:
         return renderOverlay_->Render(dc, vp);
     }
 
+  virtual void SendVectorChartObjectInfo(wxString &chart, wxString &feature,
+                                         wxString &objname, double lat,
+                                         double lon, double scale,
+                                         int nativescale) {
+        const char* chartStr = chart.mb_str();
+        const char* featureStr = feature.mb_str();
+        const char* objnameStr = objname.mb_str();
+        fprintf(stderr, "Chart: %s\nFeature: %s\nObjname: %s\nLat: %f\nLon: %f\nScale: %f\nNativescale: %d\n", chartStr, featureStr, objnameStr, lat, lon, scale, nativescale);
+    }
+
     int GetToolbarToolCount(void) { return 1; }
     void OnToolbarToolCallback(int id);
 

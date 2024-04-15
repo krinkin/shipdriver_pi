@@ -59,6 +59,7 @@ set(SRC
     src/icons.cpp
     src/CheckPathCase.h
     src/Dependencies.h
+    src/RenderOverlay.h
 )
 
 set(PKG_API_LIB api-18)  #  A dir in opencpn-libs/ e. g., api-17 or api-16

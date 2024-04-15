@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "*.embeddedhtml": "html",
+        "netcdf": "cpp",
+        "unordered_map": "cpp"
+    }
+}

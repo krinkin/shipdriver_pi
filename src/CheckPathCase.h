@@ -1,5 +1,8 @@
 #pragma once
 
+#include "DepthGrid.h"
+#include "common.h"
+
 #include <ocpn_plugin.h>
 
 #include <wx/wx.h>
@@ -10,14 +13,15 @@
 namespace MarineNavi {
 
 struct PathData {
-    double StartLat;
-    double StartLon;
+    Utils::Point Start;
+    Utils::Point End;
 
-    double EndLat;
-    double EndLon;
+    std::optional<double> ShipDraft;
+    std::optional<std::string> PathToDepthFile;
 };
 
 class CheckPathCase {
+    using Point = Utils::Point;
 public:
     CheckPathCase() : mutex_(), pathData_(), show_(false) {}
 
@@ -42,39 +46,57 @@ public:
         return show_;
     }
 
+    bool CheckLandIntersection(const Point& p1, const Point& p2) const {
+        static constexpr double EPS = 1e-5;
+
+        Point minCorner{std::min(p1.Lat, p2.Lat), std::min(p1.Lon, p2.Lon)};
+        Point maxCorner{std::max(p1.Lat, p2.Lat), std::max(p1.Lon, p2.Lon)};
+        minCorner.Lat -= EPS;
+        minCorner.Lon -= EPS;
+        maxCorner.Lat += EPS;
+        maxCorner.Lon += EPS;
+
+        return PlugIn_GSHHS_CrossesLand(minCorner.Lat, minCorner.Lon, maxCorner.Lat, maxCorner.Lon);
+    }
+
+    bool CheckDepth(const DepthGrid& grid, const Point& p, double draft) const {
+        auto depth = grid.GetDetph(p);
+
+        if (depth.has_value()) {
+            return depth >= draft; // TODO perhaps it needs to be taken into account with some margin
+        }
+
+        return true;
+    }
+
     std::optional<wxPoint2DDouble> CrossDetect(const PathData& pathData_) const {
-        static constexpr int ITER_NUM = 30;
+        static constexpr int ITER_NUM = 50;
+        const Point start = pathData_.Start;
+        const Point end = pathData_.End; 
+        std::optional<DepthGrid> grid;
+        if (pathData_.PathToDepthFile.has_value() && pathData_.ShipDraft.has_value()) {
+            grid = DepthGrid(pathData_.PathToDepthFile.value());
+        }
 
-        double origX = pathData_.StartLat, origY = pathData_.StartLon;
-        double startX = pathData_.StartLat, startY = pathData_.StartLon;
-        double endX = pathData_.EndLat, endY = pathData_.EndLon;
-        double vecX = endX - startX, vecY = endY - startY;
-
-        // wxPoint2DDouble start = wxPoint2DDouble(pathData_.StartLat, pathData_.StartLon);
-        // wxPoint2DDouble end = wxPoint2DDouble(pathData_.EndLat, pathData_.EndLat);
-        // wxPoint2DDouble vec = end - start;
-        
-        if (!PlugIn_GSHHS_CrossesLand(startX, startY, endX, endY)) {
+        if (!CheckLandIntersection(start, end)) {
             return std::nullopt;
         }
 
-        fprintf(stderr, "Collision detected %f %f %f %f\n", startX, startY, endX, endY);
+        Utils::Point vec = pathData_.End - pathData_.Start;
 
-        for(int i = 0; i < ITER_NUM; ++i) {
-            vecX /= 2;
-            vecY /= 2;
-            double midX = startX + vecX;
-            double midY = startY + vecY;
+        for(int i = 0; i <= ITER_NUM; ++i) {
+            double k = static_cast<double>(i) / ITER_NUM;
+            Point p = start + vec * k;
 
-            if (PlugIn_GSHHS_CrossesLand(origX, origY, midX, midY)) {
-                endX = midX;
-                endY = midY;
-            } else {
-                startX = midX;
-                startY = midY;
+            if (grid.has_value() && !CheckDepth(grid.value(), p, pathData_.ShipDraft.value())) {
+                return wxPoint2DDouble(p.X(), p.Y());
+            }
+
+            if (CheckLandIntersection(pathData_.Start, p)) {
+                return wxPoint2DDouble(p.X(), p.Y());
             }
         }
-        return wxPoint2DDouble(endX, endY);
+        return std::nullopt;
     }
 
 private:

@@ -48,6 +48,8 @@ private:
     wxTextCtrl* cStartLon_;
     wxTextCtrl* cEndLat_;
     wxTextCtrl* cEndLon_;
+    wxTextCtrl* cShipDraft_;
+    wxTextCtrl* cPathToFile_; // TODO use wxFileDialog or something else
 
     wxButton* bCheckPath_;
 };

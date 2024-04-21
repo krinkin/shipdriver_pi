@@ -49,6 +49,8 @@ namespace MarineNavi {
         cStartLon_ = new wxTextCtrl(this, wxID_ANY);
         cEndLat_ = new wxTextCtrl(this, wxID_ANY);
         cEndLon_ = new wxTextCtrl(this, wxID_ANY);
+        cShipDraft_ = new wxTextCtrl(this, wxID_ANY);
+        cPathToFile_ = new wxTextCtrl(this, wxID_ANY);
 
         fgSizer11->Add(new wxStaticText(this, wxID_ANY, _("Start point lat")));
         fgSizer11->Add(cStartLat_, 0, wxALL|wxEXPAND, 5);
@@ -58,6 +60,12 @@ namespace MarineNavi {
         fgSizer11->Add(cEndLat_, 0, wxALL|wxEXPAND, 5);
         fgSizer11->Add(new wxStaticText(this, wxID_ANY, _("End point lon")));
         fgSizer11->Add(cEndLon_, 0, wxALL|wxEXPAND, 5);
+        
+        fgSizer11->Add(new wxStaticText(this, wxID_ANY, _("Ship draft")));
+        fgSizer11->Add(cShipDraft_, 0, wxALL|wxEXPAND, 5);
+        
+        fgSizer11->Add(new wxStaticText(this, wxID_ANY, _("Path to depth data file")));
+        fgSizer11->Add(cPathToFile_, 0, wxALL|wxEXPAND, 5);
 
         auto* fgSizer = new wxFlexGridSizer(0, 1, 0, 0);
 
@@ -86,14 +94,24 @@ namespace MarineNavi {
         auto rawLonStart = cStartLon_->GetValue();
         auto rawLatEnd = cEndLat_->GetValue();
         auto rawLonEnd = cEndLon_->GetValue();
+        auto rawShipDraft = cShipDraft_->GetValue();
+        pathData.PathToDepthFile = cPathToFile_->GetValue();
 
-        if(!rawLatStart.ToDouble(&pathData.StartLat)
-            || !rawLonStart.ToDouble(&pathData.StartLon)
-            || !rawLatEnd.ToDouble(&pathData.EndLat)
-            || !rawLonEnd.ToDouble(&pathData.EndLon)){
-
-            printf("failed to parse start or end coordinates");
+        if(!rawLatStart.ToDouble(&pathData.Start.Lat)
+            || !rawLonStart.ToDouble(&pathData.Start.Lon)
+            || !rawLatEnd.ToDouble(&pathData.End.Lat)
+            || !rawLonEnd.ToDouble(&pathData.End.Lon)) {
+            printf("failed to parse start or end coordinates"); // TODO notify somehow
             return;
+        }
+
+        if (!rawShipDraft.empty()) {
+            double shipDraft;
+            if (!rawShipDraft.ToDouble(&shipDraft)) {
+                printf("failed to parse ship draft"); // TODO notify somehow
+                return;
+            }
+            pathData.ShipDraft = shipDraft;
         }
 
         checkPathCase_->SetPathData(pathData);

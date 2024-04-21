@@ -38,9 +38,21 @@ add_library(${CMAKE_PROJECT_NAME} SHARED EXCLUDE_FROM_ALL ${SRC})
 include_directories(BEFORE ${CMAKE_BINARY_DIR}/include)
 
 add_subdirectory("opencpn-libs/${PKG_API_LIB}")
-add_subdirectory("netcdf-cxx4")
 
-target_link_libraries(${CMAKE_PROJECT_NAME} ocpn::api NETCDF)
+# if (APPLE)
+#   add_library(netcdf SHARED IMPORTED)
+#   add_library(netcdf-cxx SHARED IMPORTED)
+#   set_target_properties(netcdf PROPERTIES
+#     IMPORTED_LOCATION "/opt/homebrew/lib/libnetcdf.dylib"
+#     INTERFACE_INCLUDE_DIRECTORIES "/opt/homebrew/include")
+#   set_target_properties(netcdf-cxx PROPERTIES
+#     IMPORTED_LOCATION "/opt/homebrew/lib/libnetcdf-cxx4.dylib"
+#     INTERFACE_INCLUDE_DIRECTORIES "/opt/homebrew/include")
+# else()
+# 
+# endif()
+# target_link_libraries(${CMAKE_PROJECT_NAME} ocpn::api netcdf netcdf-cxx)
+target_link_libraries(${CMAKE_PROJECT_NAME} ocpn::api)
 
 set(VERSION_MAJOR ${PROJECT_VERSION_MAJOR})
 set(VERSION_MINOR ${PROJECT_VERSION_MINOR})

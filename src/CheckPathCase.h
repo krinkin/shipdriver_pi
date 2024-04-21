@@ -63,7 +63,7 @@ public:
         auto depth = grid.GetDetph(p);
 
         if (depth.has_value()) {
-            return depth >= draft; // TODO perhaps it needs to be taken into account with some margin
+            return -depth.value() > draft; // TODO perhaps it needs to be taken into account with some margin
         }
 
         return true;
@@ -89,11 +89,11 @@ public:
             Point p = start + vec * k;
 
             if (grid.has_value() && !CheckDepth(grid.value(), p, pathData_.ShipDraft.value())) {
-                return wxPoint2DDouble(p.X(), p.Y());
+                return wxPoint2DDouble(p.Lat, p.Lon);
             }
 
             if (CheckLandIntersection(pathData_.Start, p)) {
-                return wxPoint2DDouble(p.X(), p.Y());
+                return wxPoint2DDouble(p.Lat, p.Lon);
             }
         }
         return std::nullopt;

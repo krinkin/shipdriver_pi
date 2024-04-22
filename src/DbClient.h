@@ -1,10 +1,7 @@
 #pragma once
 
-#include <ocpn_plugin.h>
 #include <SQLiteCpp/Database.h>
 #include <SQLiteCpp/Transaction.h>
-
-#include <wx/filename.h>
 
 #include <memory>
 #include <string>

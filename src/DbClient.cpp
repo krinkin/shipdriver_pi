@@ -1,5 +1,8 @@
 #include "DbClient.h"
 
+#include "ocpn_plugin.h"
+#include <wx/filename.h>
+
 namespace MarineNavi {
 
 std::shared_ptr<SQLite::Database> CreateDatabase(std::string dbName) {

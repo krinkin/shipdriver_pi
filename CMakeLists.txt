@@ -37,8 +37,6 @@ include(PluginCompiler)
 add_library(${CMAKE_PROJECT_NAME} SHARED EXCLUDE_FROM_ALL ${SRC})
 include_directories(BEFORE ${CMAKE_BINARY_DIR}/include)
 
-add_subdirectory("opencpn-libs/${PKG_API_LIB}")
-
 # if (APPLE)
 #   add_library(netcdf SHARED IMPORTED)
 #   add_library(netcdf-cxx SHARED IMPORTED)
@@ -52,6 +50,8 @@ add_subdirectory("opencpn-libs/${PKG_API_LIB}")
 # 
 # endif()
 # target_link_libraries(${CMAKE_PROJECT_NAME} ocpn::api netcdf netcdf-cxx)
+
+add_subdirectory("opencpn-libs/${PKG_API_LIB}") 
 target_link_libraries(${CMAKE_PROJECT_NAME} ocpn::api)
 
 set(VERSION_MAJOR ${PROJECT_VERSION_MAJOR})
@@ -107,20 +107,11 @@ if (NOT ${BUILD_TYPE} STREQUAL "flatpak")
 
   include_directories(BEFORE ${CMAKE_BINARY_DIR}/include)
  
-  if (COMMAND add_plugin_libraries)
-    add_plugin_libraries()
-  endif ()
+  # if (COMMAND add_plugin_libraries)
+  add_plugin_libraries()
+  # endif ()
 
 endif ()
-
-add_subdirectory("opencpn-libs/sqlite")
-target_link_libraries(${CMAKE_PROJECT_NAME} ocpn::sqlite)
-add_subdirectory("opencpn-libs/SQLiteCpp")
-target_link_libraries(${CMAKE_PROJECT_NAME} ocpn::sqlite_cpp)
-add_subdirectory("opencpn-libs/curl")
-target_link_libraries(${CMAKE_PROJECT_NAME} ocpn::libcurl)
-add_subdirectory("opencpn-libs/wxcurl")
-target_link_libraries(${CMAKE_PROJECT_NAME} ocpn::wxcurl)
 
 configure_file(
   ${CMAKE_SOURCE_DIR}/config.h.in ${CMAKE_BINARY_DIR}/include/config.h

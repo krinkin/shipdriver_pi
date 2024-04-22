@@ -80,14 +80,8 @@ endmacro ()
 
 macro(add_plugin_libraries)
   # Add libraries required by this plugin
-  add_subdirectory("${CMAKE_SOURCE_DIR}/opencpn-libs/tinyxml")
-  target_link_libraries(${PACKAGE_NAME} ocpn::tinyxml)
-
   add_subdirectory("${CMAKE_SOURCE_DIR}/opencpn-libs/wxJSON")
   target_link_libraries(${PACKAGE_NAME} ocpn::wxjson)
-
-  add_subdirectory("${CMAKE_SOURCE_DIR}/opencpn-libs/plugin_dc")
-  target_link_libraries(${PACKAGE_NAME} ocpn::plugin-dc)
 
   add_subdirectory("${CMAKE_SOURCE_DIR}/opencpn-libs/jsoncpp")
   target_link_libraries(${PACKAGE_NAME} ocpn::jsoncpp)

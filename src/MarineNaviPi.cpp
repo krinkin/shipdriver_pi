@@ -72,14 +72,15 @@ static wxBitmap load_plugin(const char* icon_name, const char* api_name) {
   return bitmap;
 }
 
-MarineNaviPi::MarineNaviPi(void* ppimgr) : opencpn_plugin_118(ppimgr), parentWindow_(nullptr), dlg_(nullptr), toolId_(-1), showDlg_(false) {
+MarineNaviPi::MarineNaviPi(void* ppimgr) 
+  : opencpn_plugin_118(ppimgr),
+    deps_(MarineNavi::CreateDependencies(nullptr)),
+    parentWindow_(nullptr),
+    dlg_(nullptr),
+    renderOverlay_(deps_.RenderOverlay),
+    toolId_(-1),
+    showDlg_(false) {
   // Create the PlugIn icons
-  deps_.CheckPathCase = std::make_shared<MarineNavi::CheckPathCase>();
-  deps_.RenderOverlay = std::make_shared<MarineNavi::RenderOverlay>(deps_);
-  deps_.OcpnCanvasWindow = parentWindow_;
-
-  renderOverlay_ = deps_.RenderOverlay;
-
   initialize_images();
   panelBitmap_ = load_plugin("shipdriver_panel_icon", "MarineNaviPi");
 }

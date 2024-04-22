@@ -51,17 +51,24 @@ set(PKG_HOMEPAGE https://github.com/Rasbats/shipdriver_pi)
 set(PKG_INFO_URL https://opencpn.org/OpenCPN/plugins/shipdriver.html)
 
 set(SRC
-    src/MarineNaviDlg.h
-    src/MarineNaviDlg.cpp
-    src/MarineNaviPi.h
-    src/MarineNaviPi.cpp
-    src/icons.h
-    src/icons.cpp
     src/CheckPathCase.h
-    src/Dependencies.h
-    src/RenderOverlay.h
-    src/DepthGrid.h
     src/common.h
+    src/csv_parser.cpp
+    src/csv_parser.h
+    src/DbClient.cpp
+    src/DbClient.h
+    src/Dependencies.cpp
+    src/Dependencies.h
+    src/DepthGrid.h
+    src/icons.cpp
+    src/icons.h
+    src/MarineNaviDlg.cpp
+    src/MarineNaviDlg.h
+    src/MarineNaviPi.cpp
+    src/MarineNaviPi.h
+    src/RenderOverlay.h
+    src/Ship.h
+    src/WeatherGrid.h
 )
 
 set(PKG_API_LIB api-18)  #  A dir in opencpn-libs/ e. g., api-17 or api-16

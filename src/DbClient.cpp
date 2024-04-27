@@ -9,7 +9,7 @@ std::shared_ptr<SQLite::Database> CreateDatabase(std::string dbName) {
     try {
         wxString sep = wxFileName::GetPathSeparator();
         wxString dbPath = *GetpPrivateApplicationDataLocation()
-            + sep + "plugins" + sep + "marinenavi" + sep + "data" + sep + dbName;
+            + sep + "plugins" + sep + dbName;
         
         bool haveToCreate = false;
         if (!wxFileExists(dbPath)) {

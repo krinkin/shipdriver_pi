@@ -34,6 +34,7 @@ std::shared_ptr<SQLite::Database> CreateDatabase(std::string dbName) {
             "forecast_id INTEGER, "
             "FOREIGN KEY(forecast_id) REFERENCES forecasts(id))"
         );
+        trans.commit();
         return db;
     } catch(std::exception& ex) {
         fprintf(stderr, "Failed to create datbase with reason: %s\n", ex.what());

@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Forecasts.h"
+
 #include <SQLiteCpp/Database.h>
 #include <SQLiteCpp/Transaction.h>
 
@@ -12,6 +14,10 @@ class DbClient {
 
 public:
     DbClient(std::shared_ptr<SQLite::Database> db): db_(db) {
+    }
+
+    void AddForecast(time_t started_at, time_t finished_at, int source) { // TODO: batch upsert
+
     }
 
 private:

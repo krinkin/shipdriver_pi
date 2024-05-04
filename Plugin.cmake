@@ -60,6 +60,7 @@ set(SRC
     src/Dependencies.cpp
     src/Dependencies.h
     src/DepthGrid.h
+    src/Forecasts.h
     src/icons.cpp
     src/icons.h
     src/MarineNaviDlg.cpp

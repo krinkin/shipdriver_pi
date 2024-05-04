@@ -1,5 +1,9 @@
 #pragma once
 
+#include <ctime>
+#include <string>
+#include <time.h>
+
 namespace MarineNavi {
 namespace Utils {
 
@@ -28,6 +32,12 @@ struct Point {
     double Lat;
     double Lon;
 };
+
+time_t ParseDate(const std::string& repr, const std::string& format = "%Y-%m-%d %H:%M:%S") {
+    struct tm tm;
+    strptime(repr.data(), format.data(), &tm);
+    return mktime(&tm);
+}
 
 } // namespace Utils
 } // namespace MarineNavi

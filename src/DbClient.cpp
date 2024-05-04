@@ -18,21 +18,24 @@ std::shared_ptr<SQLite::Database> CreateDatabase(std::string dbName) {
             "CREATE TABLE IF NOT EXISTS forecasts ("
             "id INTEGER PRIMARY KEY AUTOINCREMENT, "
             "created_at TEXT DEFAULT CURRENT_TIMESTAMP NOT NULL, "
-            "started_at TEXT NOT NULL, "
-            "finished_at TEXT NOT NULL, "
             "source INTEGER NOT NULL)"
         );
         db->exec(
             "CREATE TABLE IF NOT EXISTS forecast_records ("
             "id INTEGER PRIMARY KEY AUTOINCREMENT, "
             "created_at TEXT DEFAULT CURRENT_TIMESTAMP NOT NULL, "
-            "date TEXT NOT NULL, "
+            "started_at TEXT NOT NULL, "
+            "end_at TEXT NOT NULL, "
             "lat REAL NOT NULL, "
             "lon REAL NOT NULL, "
             "wave_height REAL, "
             "swell_height REAL, "
             "forecast_id INTEGER, "
             "FOREIGN KEY(forecast_id) REFERENCES forecasts(id))"
+        );
+        db->exec(
+            "CREATE UNIQUE INDEX IF NOT EXISTS forecast_records_idx ON forecast_records ("
+            "date, lat, lon, forecast_id)"
         );
         trans.commit();
         return db;
